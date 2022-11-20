@@ -4,6 +4,7 @@ const fs = require("fs");
 const FormData = require("form-data");
 const axios = require("axios");
 const postPath = "http://www.lmagic.work:8800";
+
 const main = () => {
   const cwd = process.cwd();
   const configPath = path.join(cwd, "./component.config.json");
@@ -24,19 +25,20 @@ const main = () => {
       (res) => {
         // 上传成功后的处理
         const filePath = `${postPath}/static/${fileName}`;
-        return axios.post(`${postPath}/media/template/getComponentList`, {
-          ...config,
-          scriptPath: filePath,
-        });
+        return axios
+          .post(`${postPath}/media/template/postcomponent`, {
+            ...config,
+            scriptPath: filePath,
+          })
+          .then((res) => {
+            console.log("上传成功");
+          });
       },
       (err) => {
         // 出现错误时的处理
         console.log("添加失败");
       }
-    )
-    .then((res) => {
-      console.log("上传成功");
-    });
+    );
 };
 
 main();
